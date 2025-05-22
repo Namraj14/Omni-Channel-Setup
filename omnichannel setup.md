@@ -47,123 +47,173 @@ This guide walks you through setting up Omni-Channel in Salesforce from scratch,
 
 ---
 
+# Omni-Channel Routing Setup in Salesforce
+
+Omni-Channel routes work items like Cases, Chats, Leads, etc., to the right agents based on availability and capacity. Here's a step-by-step guide to set it up properly.
+
+---
+
 ## ✅ Step 1: Create a Queue
 
-**Why?**  
-You need a place to collect work before it’s routed. Omni-Channel pulls work from queues when using queue-based routing.
+### Why?  
+Queues hold work items (e.g., Cases) waiting to be routed to agents. Omni-Channel pulls work from queues.
 
-**What if you skip this?**  
-Omni-Channel won't know where to look for work. You can’t route anything.
+### What if you skip this?  
+Omni-Channel won’t know where to get work from — so no routing happens.
 
-**How to do it:**
-- Go to `Setup → Queues → New`
-- Give it a name (e.g., `High Priority Cases`)
-- Choose Object = `Case`
-- Add users or public groups to this queue
+### How to do it:  
+1. Go to **Setup → Queues → New**  
+2. Enter a **Queue Name** (e.g., "High Priority Cases")  
+3. Select **Supported Object** (e.g., Case)  
+4. Add users, roles, or public groups as queue members  
+5. Save
 
 ---
 
 ## ✅ Step 2: Create a Routing Configuration
 
-**Why?**  
-This tells Salesforce **how** to route items:
-- What's the priority?
-- How much capacity does it take?
-- Should it interrupt other work?
+### Why?  
+Defines how Omni-Channel routes work items:
 
-**What if you skip this?**  
-Even if your case goes to a queue, Omni-Channel won’t know how much load it adds or how fast to route it.
+- Priority (which work gets routed first)  
+- Capacity units (how much agent workload the item takes)  
+- Routing model (e.g., Most Available agent)
 
-**How to do it:**
-- Go to `Setup → Routing Configurations → New`
-- Example:
-  - **Name:** `High Priority Routing`
-  - **Routing Priority:** `1` (lower number = higher priority)
-  - **Units of Capacity:** `2` (e.g., big case takes 2 units)
-  - **Routing Model:** `Most Available`
+### What if you skip this?  
+Omni-Channel won't know how to prioritize or assign work, even if it finds it in the queue.
+
+### How to do it:  
+1. Go to **Setup → Routing Configurations → New**  
+2. Enter a name (e.g., "High Priority Routing")  
+3. Set **Routing Priority** (lower number = higher priority)  
+4. Set **Units of Capacity** (e.g., 2 means a big case counts as 2 units)  
+5. Choose **Routing Model** (e.g., Most Available)  
+6. Save
 
 ---
 
 ## ✅ Step 3: Assign the Routing Configuration to the Queue
 
-**Why?**  
-This connects your queue to your routing logic.
+### Why?  
+Connects your queue with the routing rules so Omni-Channel knows how to handle work in that queue.
 
-**What if you skip this?**  
-The queue will have no routing instructions. Work will just sit there — no routing will happen.
+### What if you skip this?  
+Work will stay in the queue without routing instructions — it won’t be assigned to agents.
 
-**How to do it:**
-- Go to `Setup → Queues → Edit`
-- Assign the Routing Configuration (select the one you created in Step 2)
+### How to do it:  
+1. Go to **Setup → Queues → Edit** your queue  
+2. Under **Routing Configuration**, select the routing configuration you created  
+3. Save
 
 ---
 
 ## ✅ Step 4: Create Presence Statuses
 
-**Why?**  
-Agents need a way to say:  
-“I’m online and ready for work.”  
-Omni-Channel only routes work to agents who are available in a specific status.
+### Why?  
+Agents must declare their availability via presence statuses (e.g., Available for Cases) for Omni-Channel to route work to them.
 
-**What if you skip this?**  
-Omni-Channel won’t route anything — because no agent is technically “available.”
+### What if you skip this?  
+Omni-Channel thinks no agents are available — no routing happens.
 
-**How to do it:**
-- Go to `Setup → Presence Statuses → New`
-- Create statuses like:
-  - `Available for Cases`
-  - `Offline`
-- Assign each status to the relevant **channels** (e.g., Cases, Chats)
+### How to do it:  
+1. Go to **Setup → Presence Statuses → New**  
+2. Create statuses like "Available for Cases", "Offline"  
+3. Attach each status to supported **Service Channels** (e.g., Cases)  
+4. Save
 
 ---
 
-## ✅ Step 5: Create Presence Configuration
+## ✅ Step 5: Create a Presence Configuration
 
-**Why?**  
-This groups your statuses and defines:
-- What objects the agent can receive (Cases, Chats, Leads)
-- Max capacity (total workload allowed)
+### Why?  
+Groups presence statuses and defines what type of work (objects) an agent can receive and max capacity.
 
-**What if you skip this?**  
-Agents won’t have access to those statuses in the Omni-Channel widget. Work won’t route.
+### What if you skip this?  
+Agents won't have any presence statuses in Omni-Channel widget — no work routed.
 
-**How to do it:**
-- Go to `Setup → Presence Configuration → New`
-- Example:
-  - **Name:** `Support Agents Config`
-  - **Max Capacity:** `8`
-  - Assign the **Presence Statuses** from Step 4
+### How to do it:  
+1. Go to **Setup → Presence Configurations → New**  
+2. Enter a name (e.g., "Support Agents Config")  
+3. Set **Max Capacity** (e.g., 8 units)  
+4. Add presence statuses you created in Step 4  
+5. Save
 
 ---
 
-## ✅ Step 6: Add Agents to Presence Configuration
+## ✅ Step 6: Assign Presence Configuration to Agents
 
-**Why?**  
-You must assign agents to a configuration, so they get access to Omni-Channel.
+### Why?  
+Enables agents to use Omni-Channel and receive work based on the assigned presence configuration.
 
-**What if you skip this?**  
-Your agents will see nothing. No widget. No routing. No magic.
+### What if you skip this?  
+Agents won’t see the Omni-Channel widget or get any routed work.
 
-**How to do it:**
-- Go to `Setup → Users → Edit`
-- Assign the **Presence Configuration** to the user
-
----
-
-## ✅ Step 7: Add the Omni-Channel Widget to the App
-
-**Why?**  
-Agents need a user interface to log in to Omni-Channel and change their presence status.
-
-**What if you skip this?**  
-Even if everything’s configured, agents won’t see the Omni-Channel panel. No way to accept work.
-
-**How to do it:**
-- Go to `Setup → App Manager`
-- Edit the **Lightning App** (e.g., Service Console)
-- Add the **Omni-Channel** utility item (this adds it to the bottom dock)
+### How to do it:  
+1. Go to **Setup → Users → Edit each agent user**  
+2. Set **Presence Configuration** field to the one created in Step 5  
+3. Save
 
 ---
 
-✅ Done! Now your agents can receive work through Omni-Channel using queue-based routing!
+## ✅ Step 7: Create a Service Channel
+
+### Why?  
+Service Channel **links a Salesforce object (e.g., Case) to the Queue and Routing Configuration** so Omni-Channel knows where to pull work and how to route it.
+
+### What if you skip this?  
+Omni-Channel won't know how to associate work items with queues or routing logic — routing will fail.
+
+### How to do it:  
+1. Go to **Setup → Service Channels → New**  
+2. Select the **Salesforce Object** (e.g., Case)  
+3. Select the **Queue** created in Step 1  
+4. Select the **Routing Configuration** assigned in Step 3  
+5. Save
+
+---
+
+## ✅ Step 8: Add Omni-Channel Widget to Lightning App
+
+### Why?  
+Agents need an interface to log in to Omni-Channel, change presence status, and accept work.
+
+### What if you skip this?  
+Agents won’t have access to Omni-Channel UI — they can't receive or manage work.
+
+### How to do it:  
+1. Go to **Setup → App Manager → Edit your Lightning App (e.g., Service Console)**  
+2. Add **Omni-Channel** to the Utility Bar  
+3. Save and activate the app
+
+---
+
+# Summary Flow
+
+- **Queue**: Holds work items  
+- **Routing Configuration**: Defines routing rules  
+- **Assign Routing Config to Queue**: Connects routing to queue  
+- **Presence Status & Configuration**: Agent availability and capacity  
+- **Assign Presence Config to Agents**: Enables agent participation  
+- **Service Channel**: Connects object + queue + routing for Omni-Channel  
+- **Omni-Channel Widget**: Agent interface  
+
+---
+
+# What if you skip parts?
+
+| Component                | Result if skipped                                  |
+|--------------------------|--------------------------------------------------|
+| Queue                    | No place to hold work → no routing               |
+| Routing Configuration    | No routing priority or capacity info             |
+| Routing Config + Queue   | Work stays idle, no routing happens               |
+| Presence Status          | Agents appear unavailable, no routing            |
+| Presence Configuration   | Agents can't choose status, no routing            |
+| Agent Presence Assignment| Agents can't receive routed work                  |
+| Service Channel          | Omni-Channel can't link work items to queues     |
+| Omni-Channel Widget      | Agents have no UI to accept and manage work      |
+
+---
+
+This setup ensures work items flow smoothly from creation to the right agent, based on priorities and availability.
+
 
