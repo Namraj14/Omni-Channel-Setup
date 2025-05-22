@@ -10,10 +10,31 @@ A **Service Channel** in Salesforce Omni-Channel is a configuration that routes 
 ### 1. Create a Service Channel
 - **Why?**  
   The Service Channel tells Omni-Channel which Salesforce object’s records will be routed to agents. It controls how work is delivered and how agents interact with it.
-  
+  (A Service Channel tells Omni-Channel what kind of records (Cases, Leads, custom objects, etc.) it should pay attention to and route.)
 - **What happens if you skip?**  
   Omni-Channel won’t know which object’s records to route, so no work will be routed automatically to agents for that object.
-  
+  | Component                    | Role/Relation                                                   |
+| ---------------------------- | --------------------------------------------------------------- |
+| **Case/Lead/Custom Object**  | The actual record needing attention (like a customer complaint) |
+| **Service Channel**          | Tells Omni-Channel: “Hey! This type of record needs routing”    |
+| **Queue**                    | Owns those records (who should receive them?)                   |
+| **Routing Configuration**    | Defines how fast, how big, how urgent, etc.                     |
+| **Presence Status & Config** | Defines when agents are available for which channel             |
+
+📥 Example:
+You want to route Case records:
+✅ Create a Service Channel with Object = Case
+
+✅ Create a Queue that supports Case object
+
+✅ Create a Routing Configuration
+
+✅ Link the Queue to Routing Configuration
+
+✅ Add agents to a Presence Configuration with a Presence Status like "Available for Cases"
+
+✅ Agent logs into console → goes “Available” → Case gets routed via the Service Channel
+
 - **How to do it:**  
   - Go to **Setup** → Search **Service Channels** → **New**  
   - Enter **Service Channel Name** (e.g., "miaw service channel")  
