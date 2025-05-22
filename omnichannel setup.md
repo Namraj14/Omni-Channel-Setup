@@ -121,6 +121,7 @@ Omni-Channel thinks no agents are available — no routing happens.
 3. Attach each status to supported **Service Channels** (e.g., Cases)  
 4. Save
 
+**Here we select channel to assign to presence status
 ---
 
 ## ✅ Step 5: Create a Presence Configuration
