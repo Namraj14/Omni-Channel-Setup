@@ -15,6 +15,20 @@ Presence Configuration controls:
 - Settings for **transferring** work to other agents or queues.
 
 ---
+(It controls how much work an agent can handle at a time, what types of work they can receive, and how they interact with incoming work.)
+
+🔍 In Simple Terms:
+It sets the capacity for agents (how many cases/chats/tasks they can work on simultaneously).
+It groups Presence Statuses (like Available, Busy, Offline) to control agent availability.
+It controls notifications and settings for work assignment behavior (e.g., can agents decline work? do they get notified with sounds?).
+
+| Component                  | Role/Relation                                                                  |
+| -------------------------- | ------------------------------------------------------------------------------ |
+| **Presence Configuration** | Defines max capacity and availability statuses for agents                      |
+| **Presence Status**        | The different states an agent can set (Available, Busy, Offline)               |
+| **Agents**                 | Assigned to Presence Configuration to get their work limits and status options |
+| **Omni-Channel Widget**    | Agents use this to set their status and accept work                            |
+
 
 ## Fields and Explanation
 
