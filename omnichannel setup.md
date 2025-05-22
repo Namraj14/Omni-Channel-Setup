@@ -48,180 +48,113 @@ A step-by-step explanation and setup for Omni-Channel with deep insights into **
 
 ---
 
-## 📌 What is Omni-Channel?
+✅ Step 1: Create a Queue
+Why?
+You need a place to collect work before it’s routed. Omni-Channel pulls work from queues when using queue-based routing.
 
-Omni-Channel is a Salesforce feature that **automatically routes work items (like Cases, Leads, Chats, etc.)** to the most suitable, available agents in real time.
+What if you skip this?
+Omni-Channel won't know where to look for work. You can’t route anything.
 
----
+How to do it:
+Go to Setup → Queues → New
+Give it a name (e.g., "High Priority Cases")
+Choose Object = Case
+Add agents or roles to this queue
 
-## ✅ Why Use Omni-Channel?
+✅ Step 2: Create a Routing Configuration
+Why?
+This tells Salesforce how to route items:
 
-- Automatically distributes work based on agent availability
-- Prevents agent overload
-- Ensures high-priority work gets attention first
-- Boosts service efficiency and customer satisfaction
+What's the priority?
 
----
+How much capacity does it take?
 
-## 🛠 Prerequisites
+Should it interrupt other work?
 
-1. Omni-Channel must be enabled in your org.
-2. You must have the **Service Console** license and set up.
-3. You need admin access to configure Presence, Routing, and Queues.
+What if you skip this?
+Even if your case goes to a queue, Omni-Channel won’t know how much load it adds or how fast to route it.
 
----
+How to do it:
+Setup → Routing Configurations → New
+Example:
 
-## 🔁 Omni-Channel Setup Steps
+Name: "High Priority Routing"
 
----
+Routing Priority: 1 (lower number = higher priority)
 
-### 🔹 Step 1: Enable Omni-Channel
+Units of Capacity: 2 (e.g., big case takes 2 units)
 
-**Why?** Activates the Omni-Channel settings in your org.
+Routing Model: Most Available
 
-- Go to **Setup → Omni-Channel**
-- Click **Enable Omni-Channel**
+✅ Step 3: Assign the Routing Configuration to the Queue
+Why?
+This connects your queue to your routing logic.
 
----
+What if you skip this?
+The queue will have no routing instructions. Work will just sit there — no routing will happen.
 
-### 🔹 Step 2: Create Presence Statuses
+How to do it:
+Setup → Queue → Edit → Assign Routing Configuration (select the one you made)
 
-**Why?** These are the online/offline indicators agents use (e.g., "Available for Case", "Offline").
+✅ Step 4: Create Presence Statuses
+Why?
+Agents need a way to say:
+"I’m online and ready for work."
+Omni-Channel only routes work to agents who are available in a certain status.
 
-**How:**
-- Go to **Setup → Presence Statuses**
-- Click **New**
-  - Name: `Available for Cases`
-  - Status Type: `Online`
-  - Channels: `Cases`
-- Add more statuses as needed (Offline, Chat, etc.)
+What if you skip this?
+Omni-Channel won’t route anything — because no agent is technically “available.”
 
----
+How to do it:
+Setup → Presence Statuses → New
+Create statuses like:
 
-### 🔹 Step 3: Create Presence Configuration
+Available for Cases
 
-**Why?** Groups the statuses and defines:
-- Which objects (Cases, Leads, Chats) an agent can receive
-- Max capacity (total workload units allowed)
+Offline
 
-**How:**
-- Go to **Setup → Presence Configurations**
-- Click **New**
-  - Name: `Case Support Agents`
-  - Capacity: `6`
-  - Assign previously created Presence Statuses
+Attach this to the correct channels (like Cases)
 
----
+✅ Step 5: Create Presence Configuration
+Why?
+This groups your statuses and defines:
 
-### 🔹 Step 4: Create a Routing Configuration
+What objects the agent can receive (Cases, Chats, Leads)
 
-**Why?** Tells Salesforce **how** to assign work:
-- Priority (lower = more urgent)
-- Capacity weight (how heavy is this work)
-- Routing model (Least Active or Most Available)
+Max capacity (total workload allowed)
 
-**How:**
-- Go to **Setup → Routing Configurations**
-- Click **New**
-  - Name: `High Priority Cases`
-  - Routing Priority: `1`
-  - Capacity Units: `2`
-  - Routing Model: `Most Available`
+What if you skip this?
+Agents won’t have access to those statuses in the Omni-Channel widget. Work won’t route.
 
----
+How to do it:
+Setup → Presence Configuration → New
+Example:
 
-### 🔹 Step 5: Create a Queue & Link Routing Configuration
+Name: Support Agents Config
 
-**Why?** The Queue is the holding area for work. You must assign a Routing Configuration to tell Salesforce how to process the items in it.
+Max Capacity: 8
 
-**How:**
-- Go to **Setup → Queues**
-- Click **New**
-  - Name: `Case Queue`
-  - Object: `Case`
-  - Add members (users/profiles)
-  - Assign Routing Configuration: `High Priority Cases`
+Assign Presence Statuses (from Step 4)
 
----
+✅ Step 6: Add Agents to Presence Configuration
+Why?
+You must assign agents to a configuration, so they get access to Omni-Channel.
 
-### 🔹 Step 6: Assign Users to Presence Configuration
+What if you skip this?
+Your agents will see nothing. No widget. No routing. No magic.
 
-**Why?** Agents won’t be able to go online or receive work unless assigned.
+How to do it:
+Setup → Users → Edit each user → Assign Presence Configuration field
 
-**How:**
-- Go to **Setup → Users**
-- Edit a User
-  - Presence Configuration: `Case Support Agents`
+✅ Step 7: Add the Omni-Channel Widget to the App
+Why?
+Agents need a user interface to log in to Omni-Channel and change their presence status.
 
----
+What if you skip this?
+Even if everything’s configured, agents won’t see the Omni-Channel panel. No way to accept work.
 
-### 🔹 Step 7: Add Omni-Channel to Console App
+How to do it:
 
-**Why?** This lets agents see the Omni-Channel widget in their workspace.
+Go to Setup → App Manager → Edit the Lightning App (e.g., Service Console)
 
-**How:**
-- Go to **App Manager → [Your Console App] → Edit**
-- Under **Utility Bar**, click **Add Utility Item → Omni-Channel**
-- Set Panel Height: `300`, Panel Width: `400`
-
----
-
-### 🔹 Step 8: Test the Setup
-
-1. Login as an agent.
-2. Open the console app.
-3. Change Presence Status to "Available for Cases".
-4. Create a new Case assigned to the Queue.
-5. Watch it get automatically routed.
-
----
-
-## 🧠 Bonus Tips
-
-- Use **"Most Available"** for balanced workload distribution.
-- Use **Routing Priority** wisely — it ensures urgent work is not stuck.
-- Monitor with **Omni Supervisor** for real-time visibility.
-
----
-
-## 🧪 FAQs
-
-### Q: Can a queue have multiple routing configs?
-❌ No. One queue = One routing config.
-
-### Q: Can a routing config be reused?
-✅ Yes. One routing config can be used by multiple queues **if they have the same routing logic**.
-
-### Q: What happens if a user has no presence config?
-❌ They can't go online, receive work, or use the Omni-Channel widget.
-
----
-
-## 🧩 Real-World Example Setup
-
-| Element                | Value                          |
-|------------------------|--------------------------------|
-| Queue Name             | `High Priority Cases`          |
-| Routing Configuration  | `High Priority Routing (1)`    |
-| Presence Statuses      | `Available for Cases`, `Offline` |
-| Presence Configuration | `Case Support Agents` (Capacity: 6) |
-| Console App            | `Service Console` with Omni Widget |
-
----
-
-## 🧰 Useful Objects
-
-| Object                        | Description                      |
-|-------------------------------|----------------------------------|
-| `PresenceUserConfig`          | User-Presence Configuration link |
-| `PresenceStatus`              | Statuses like "Available"        |
-| `RoutingConfiguration`        | Routing rules per queue          |
-| `Omni-Channel Supervisor`     | Monitor agent workloads          |
-
----
-
-## ✅ You're Ready!
-
-Now your Omni-Channel setup is production-ready. You’ve not only configured it — you understand **why** it works that way. 🎯
-
-
+Add Omni-Channel utility item (bottom bar icon)
