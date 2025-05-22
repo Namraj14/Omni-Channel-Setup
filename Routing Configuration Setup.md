@@ -29,16 +29,8 @@
 
 ---
 
-### 3. Search Scope
-- **What it is:**  
-  Defines where to look for the overflow assignee (typically a user).
-  
-- **Why you need it:**  
-  To specify the correct user or group for overflow assignments.
 
----
-
-### 4. Routing Priority
+### 3. Routing Priority
 - **What it is:**  
   A numeric priority that determines the order Omni-Channel routes work items across multiple queues.
   
@@ -53,7 +45,7 @@
 
 ---
 
-### 5. Routing Model
+### 4. Routing Model
 - **What it is:**  
   Defines the logic for distributing work among agents when multiple agents qualify to receive the same work item.
   
@@ -69,7 +61,7 @@
 
 ---
 
-### 6. Push Time-Out (seconds)
+### 5. Push Time-Out (seconds)
 - **What it is:**  
   How long Omni-Channel tries to push work to an agent before trying someone else.
   
@@ -81,7 +73,7 @@
 
 ---
 
-### 7. Drop Additional Skills Time-Out (seconds)
+### 6. Drop Additional Skills Time-Out (seconds)
 - **What it is:**  
   The time Omni-Channel waits before relaxing skill matching requirements if no agent with all required skills is found.
   
@@ -93,7 +85,7 @@
 
 ---
 
-### 8. Capacity Type
+### 7. Capacity Type
 - **What it is:**  
   Determines how capacity is measured for work assignments.
   
@@ -109,7 +101,7 @@
 
 ---
 
-### 9. Skills-Based Routing Rules
+### 8. Skills-Based Routing Rules
 - **What it is:**  
   Allows you to route work based on agent skills matched to work item skills.
   
@@ -124,7 +116,7 @@
 
 ---
 
-### 10. Work Item Size (Units of Capacity or Percentage of Capacity)
+### 9. Work Item Size (Units of Capacity or Percentage of Capacity)
 - **What it is:**  
   Defines the "size" of a work item relative to agent capacity.
   
