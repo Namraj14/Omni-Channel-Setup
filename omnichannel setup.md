@@ -110,7 +110,7 @@ Work will stay in the queue without routing instructions — it won’t be assig
 ## ✅ Step 4: Create Presence Statuses
 
 ### Why?  
-Agents must declare their availability via presence statuses (e.g., Available for Cases) for Omni-Channel to route work to them.
+Let agents indicate when they’re online and available to receive work items from a specific service channel, or whether they’re away or offline.
 
 ### What if you skip this?  
 Omni-Channel thinks no agents are available — no routing happens.
@@ -126,7 +126,7 @@ Omni-Channel thinks no agents are available — no routing happens.
 ## ✅ Step 5: Create a Presence Configuration
 
 ### Why?  
-Groups presence statuses and defines what type of work (objects) an agent can receive and max capacity.
+Define how much work agents can accept and which Omni-Channel features they can access. Create multiple configurations for different groups of agents who support different channels.
 
 ### What if you skip this?  
 Agents won't have any presence statuses in Omni-Channel widget — no work routed.
@@ -158,7 +158,7 @@ Agents won’t see the Omni-Channel widget or get any routed work.
 ## ✅ Step 7: Create a Service Channel
 
 ### Why?  
-Service Channel **links a Salesforce object (e.g., Case) to the Queue and Routing Configuration** so Omni-Channel knows where to pull work and how to route it.
+Route work from a Salesforce object, such as cases, chats, leads, or even custom objects, to support agents.
 
 ### What if you skip this?  
 Omni-Channel won't know how to associate work items with queues or routing logic — routing will fail.
