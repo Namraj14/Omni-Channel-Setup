@@ -1,0 +1,167 @@
+# 🔄 Omni-Channel Routing Types and Setup in Salesforce
+
+This documentation covers the **types of Omni-Channel routing**, why each setup step is required, how to implement it, and what happens if skipped. Perfect for Salesforce Admins and Developers.
+
+---
+
+## 🚦 Routing Types in Omni-Channel
+
+Salesforce supports two main types of routing:
+
+### 1️⃣ Queue-Based Routing
+
+- **What:** Routes work items from a **Queue** to agents based on their availability and defined capacity.
+- **Why Use It:** Simpler and great for standard objects like `Case`, `Lead`, etc.
+- **How:**
+  - Create a **Queue**
+  - Assign a **Routing Configuration** to that queue
+- **If Not Used:** Items sit in the queue and won't be auto-assigned to agents. Manual assignment will be required.
+
+### 2️⃣ Skill-Based Routing
+
+- **What:** Matches work items to agents who have the required **Skills**.
+- **Why Use It:** When work requires specialized agents (e.g., language, technical expertise).
+- **How:**
+  - Define **Skills**
+  - Tag users with skills
+  - Use **Skill Requirements** on the work record
+  - Use **Routing Rules** or **Flows** to evaluate and assign skills
+- **If Not Used:** Agents may receive work they aren't qualified for, leading to poor customer experience.
+
+---
+
+## 🔁 How Routing Configuration Links with Queue
+
+### 🔗 Relationship Between Routing Configuration and Queue
+
+| Component             | Description                                                  |
+|----------------------|--------------------------------------------------------------|
+| **Queue**            | A holding area for unassigned work items                     |
+| **Routing Config**   | Tells Salesforce how to route work from the queue to agents  |
+
+- Each **Queue can be assigned only one Routing Configuration**.
+- You **cannot assign multiple Routing Configurations** to a single queue.
+
+### 🧠 Why This Matters
+
+- Routing Configuration defines:
+  - **Routing Priority** (lower = more important)
+  - **Workload Weight/Capacity**
+  - **Routing Model** (Least Active vs Most Available)
+
+---
+
+## 🛠 Example Use Case
+
+Let’s say you want to prioritize high-value customer cases.
+
+1. **Queue:** `High Priority Cases`
+2. **Routing Configuration:** Priority = 1, Capacity Weight = 2
+3. **Agent:** Max capacity = 6
+4. **Outcome:** Agents get this case before others because it has higher routing priority.
+
+---
+
+## 🪜 Complete Setup Flow with Purpose
+
+Each of these steps has a **“Why”** and **“What if you skip it”** explanation.
+
+---
+
+### 1️⃣ Enable Omni-Channel
+
+- **Why:** Activates the feature
+- **How:** Setup → Omni-Channel → Enable
+- **Skip = ❌:** Omni settings and routing won’t be available
+
+---
+
+### 2️⃣ Create Presence Statuses
+
+- **Why:** Allows agents to set themselves as `Available` or `Busy`
+- **How:** Setup → Presence Statuses → New
+- **Skip = ❌:** Agents can't receive work because Omni can't see who's online
+
+---
+
+### 3️⃣ Create Routing Configuration
+
+- **Why:** Tells Salesforce how to route (priority, weight, routing model)
+- **How:** Setup → Routing Configurations → New
+- **Skip = ❌:** Work won't leave the queue even if agents are available
+
+---
+
+### 4️⃣ Create Queue & Assign Routing Configuration
+
+- **Why:** The link between holding work and routing logic
+- **How:** Setup → Queues → New → Assign Routing Config
+- **Skip = ❌:** Work won’t be routed, even if routing config exists
+
+---
+
+### 5️⃣ Create Presence Configuration
+
+- **Why:** Groups statuses and sets what objects users can receive (Case, Chat, etc.)
+- **How:** Setup → Presence Configuration → New
+- **Skip = ❌:** Agents won’t be allowed to handle any work (no access granted)
+
+---
+
+### 6️⃣ Assign Presence Config to Users
+
+- **Why:** Without this, users won’t be able to use the presence statuses or Omni at all
+- **How:** Setup → Users → Edit → Presence Configuration field
+- **Skip = ❌:** Omni won’t recognize user as eligible to receive work
+
+---
+
+### 7️⃣ Add Omni-Channel to the Utility Bar in Console App
+
+- **Why:** Shows the Omni widget where agents manage their availability
+- **How:** App Manager → Edit Console → Add Utility Item → Omni-Channel
+- **Skip = ❌:** Agents won’t see the widget to go online or receive work
+
+---
+
+## 🎓 Real-World Example Summary
+
+| Element                | Value                          |
+|------------------------|--------------------------------|
+| Queue Name             | `High Priority Cases`          |
+| Routing Configuration  | `Priority 1 - Capacity 2`      |
+| Presence Statuses      | `Available for Cases`, `Offline` |
+| Presence Configuration | `Case Agents Config`           |
+| Console App            | `Service Console with Omni`    |
+
+---
+
+## 🧪 Testing Omni-Channel
+
+1. Log in as a user with Presence Configuration.
+2. Go to Service Console app.
+3. Change status to `Available for Cases`.
+4. Create a Case assigned to the Queue.
+5. Observe the auto-routing to the agent.
+
+---
+
+## 🧠 Final Notes
+
+- You can reuse one Routing Config across multiple queues (if logic is same).
+- Each queue must have **one and only one Routing Configuration**.
+- Omni-Channel is real-time but needs all parts connected: Status → Routing → Queue → User.
+
+---
+
+## ✅ Done!
+
+You've now learned:
+
+- Types of Routing
+- Why each config matters
+- What happens if you skip steps
+- How everything connects together
+
+Use this as a blueprint when setting up Omni-Channel in real projects.
+
