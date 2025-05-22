@@ -271,13 +271,4 @@ Omni-Channel automatically routes work (Cases, Leads, Chats, etc.) to the right 
 
 ---
 
-## Simple Diagram (Flow)
 
-```mermaid
-graph LR
-    WorkItem("Work Item (Case, Lead, Chat)") --> Queue("Queue (e.g., Support Queue)")
-    Queue --> RoutingConfig("Routing Configuration")
-    RoutingConfig --> ServiceChannel("Service Channel (Case)")
-    RoutingConfig --> PresenceConfig("Presence Configuration (Agent Capacity)")
-    PresenceConfig --> Agents("Agents")
-    Agents --> OmniChannelWidget("Omni-Channel Widget")
