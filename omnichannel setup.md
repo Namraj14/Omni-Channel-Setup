@@ -167,9 +167,7 @@ Omni-Channel won't know how to associate work items with queues or routing logic
 ### How to do it:  
 1. Go to **Setup → Service Channels → New**  
 2. Select the **Salesforce Object** (e.g., Case)  
-3. Select the **Queue** created in Step 1  
-4. Select the **Routing Configuration** assigned in Step 3  
-5. Save
+3. Save
 
 ---
 
