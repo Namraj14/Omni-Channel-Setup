@@ -217,3 +217,67 @@ Agents won’t have access to Omni-Channel UI — they can't receive or manage w
 This setup ensures work items flow smoothly from creation to the right agent, based on priorities and availability.
 
 
+
+# Simple Omni-Channel Setup Flow
+
+## What is Omni-Channel?
+
+Omni-Channel automatically routes work (Cases, Leads, Chats, etc.) to the right agents based on availability, skills, and workload.
+
+---
+
+## Key Components and How They Link
+
+### 1. Work Items (Cases, Leads, Chats, etc.)
+- These are the tasks or records that need to be handled by agents.
+- Example: A new Case is created by a customer.
+
+### 2. Queue
+- A queue is like a waiting room for work items.
+- Work items get assigned to a queue before being sent to agents.
+- Example: All support cases go to the "Support Queue."
+
+### 3. Routing Configuration
+- This tells Omni-Channel how to route work from the queue to agents.
+- It sets priority (which work gets routed first), routing model (how to distribute work), and capacity units (how much work an item counts as).
+- Example: High priority cases have priority 1 and use "Most Available" routing.
+
+### 4. Service Channel
+- This connects a Salesforce object (like Case or Lead) to Omni-Channel.
+- It tells Omni-Channel what type of work it should manage.
+- Example: The "Case Service Channel" manages Cases in Omni-Channel.
+
+### 5. Presence Configuration
+- Defines how much work an agent can handle at once.
+- Specifies if agents can accept or decline work, notification settings, etc.
+- Example: Agents can handle up to 5 cases at the same time.
+
+### 6. Agents
+- Agents set their presence status (Available, Offline) via Omni-Channel widget.
+- They receive work pushed by Omni-Channel based on the above settings.
+
+---
+
+## How Everything Connects
+
+| Component           | Linked To                | What It Does                                           |
+|---------------------|--------------------------|-------------------------------------------------------|
+| Work Item           | Queue                    | Work items wait here before routing                    |
+| Queue               | Routing Configuration    | Controls how work is routed to agents                  |
+| Routing Configuration| Service Channel          | Connects queue routing to a Salesforce object          |
+| Service Channel     | Omni-Channel System       | Enables Omni-Channel to manage that object’s work      |
+| Routing Configuration| Presence Configuration   | Defines agent capacity and work acceptance rules       |
+| Presence Configuration| Agents                  | Agents’ settings for receiving work                     |
+
+---
+
+## Simple Diagram (Flow)
+
+```mermaid
+graph LR
+    WorkItem[Work Item (Case, Lead, Chat)] --> Queue[Queue (e.g., Support Queue)]
+    Queue --> RoutingConfig[Routing Configuration]
+    RoutingConfig --> ServiceChannel[Service Channel (Case)]
+    RoutingConfig --> PresenceConfig[Presence Configuration (Agent Capacity)]
+    PresenceConfig --> Agents[Agents]
+    Agents --> OmniChannelWidget[Omni-Channel Widget]
