@@ -110,7 +110,11 @@ Work will stay in the queue without routing instructions — it won’t be assig
 ## ✅ Step 4: Create Presence Statuses
 
 ### Why?  
-Let agents indicate when they’re online and available to receive work items from a specific service channel, or whether they’re away or offline.
+A **Presence Status** lets agents indicate their availability to receive work items from specific **Service Channels**.
+
+- For example, if you create a status called **"Available – Case"**, and assign a service channel linked to the **Case** object, then when an agent selects this status, they’ll only receive **Case** records routed through that service channel.
+- Similarly, if you create a status called **"Available – Message"** and link it to a channel based on the **Messaging Session** object, agents using this status will receive only **messages**.
+- If a single presence status includes **multiple channels**, agents can receive work from **all linked objects** (e.g., Case + Messaging).
 
 ### What if you skip this?  
 Omni-Channel thinks no agents are available — no routing happens.
@@ -121,13 +125,20 @@ Omni-Channel thinks no agents are available — no routing happens.
 3. Attach each status to supported **Service Channels** (e.g., Cases)  
 4. Save
 
-**Here we select channel to assign to presence status
 ---
 
 ## ✅ Step 5: Create a Presence Configuration
 
 ### Why?  
-Define how much work agents can accept and which Omni-Channel features they can access. Create multiple configurations for different groups of agents who support different channels.
+The **Presence Configuration** defines the **agent's capacity** and Omni-Channel behavior.
+
+- You specify **how much work** (based on unit size or capacity %) an agent can handle at a time.
+- You can also control agent interactions such as:
+  - Auto-accepting work
+  - Declining assignments
+  - Setting wrap-up time after closing an item
+  - Playing notification sounds for new work
+- Agents (users or profiles) are assigned to this configuration.
 
 ### What if you skip this?  
 Agents won't have any presence statuses in Omni-Channel widget — no work routed.
@@ -160,6 +171,7 @@ Agents won’t see the Omni-Channel widget or get any routed work.
 
 ### Why?  
 Route work from a Salesforce object, such as cases, chats, leads, or even custom objects, to support agents.
+- These channels are then assigned to **Presence Statuses**, which agents use to receive the corresponding work items.
 
 ### What if you skip this?  
 Omni-Channel won't know how to associate work items with queues or routing logic — routing will fail.
